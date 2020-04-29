@@ -76,27 +76,22 @@ public class ElementFragment extends ListFragment {
     public void createElementDetailView(int position) {
         Log.d("ElementFragment" ,"createElementDetailView");
 
-        // TO DO: landcape mode
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) { // landscape mode
             Log.d("ElementFragment: " , "landscape mode");
+            getListView().setItemChecked(position, true);
 
-            // TO DO:  remove tag1
             ElementDetailFragment details = (ElementDetailFragment) getFragmentManager()
                     .findFragmentById(R.id.detail_fragment);
 
-            if (details == null) {
-                //            if (details == null || getArguments().getInt("currelement", 0); != position) {
-                details = ElementDetailFragment.newInstance(position);
+            // update detail list data
+            details.updateDetailData(position);
 
-                // transition to ElementDetailFragment is working!
-                FragmentTransaction ft = getFragmentManager()
-                        .beginTransaction();
-                ft.replace(R.id.detail_fragment, details);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.commit();
-                //////////////////////////////////////////////////////////////////////////
-
-            }
+            // transition to ElementDetailFragment is working!
+            FragmentTransaction ft = getFragmentManager()
+                    .beginTransaction();
+            ft.replace(R.id.detail_fragment, details);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
 
         } else { // portrait mode
             Intent intent = new Intent(getActivity(), ElementDetailActivity.class);

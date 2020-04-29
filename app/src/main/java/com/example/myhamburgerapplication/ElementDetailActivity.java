@@ -19,6 +19,12 @@ public class ElementDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d("ElementDetailActivity", "onCreate()");
 
+        // finish the current activity when changing to landscape on detail view
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            finish();
+            return;
+        }
+
         if (savedInstanceState == null) {
             setContentView(R.layout.activity_detail);
             ElementDetailFragment detail_frag = (ElementDetailFragment)
@@ -30,12 +36,5 @@ public class ElementDetailActivity extends AppCompatActivity {
 //            detail_frag.setItemID();
         }
     }
-
-//    @Override
-//    public void detailItemClicked(long id) {
-//        Log.d("test", "test");
-//
-//    }
-
 
 }

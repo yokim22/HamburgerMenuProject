@@ -28,18 +28,7 @@ public class ElementDetailFragment extends ListFragment  {
 
     private int selectedEID; // selected element position
     private int selectedIID; // selected item position
-
-    // TO DO: remove tag1
-    public static ElementDetailFragment newInstance(int position) {
-        ElementDetailFragment frag = new ElementDetailFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("index", position);
-        frag.setArguments(args);
-
-        return frag;
-    }
+    String[] items;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +53,7 @@ public class ElementDetailFragment extends ListFragment  {
             Log.d("ElementDetailFragment", "/selectedEID: " + selectedEID);
             Log.d("ElementDetailFragment", "/selectedIID: " + selectedIID);
 
-            String[] items = Item.itemToArray(Item.items[selectedEID]);
+            items = Item.itemToArray(Item.items[selectedEID]);
 
             getListView().setSelector(android.R.color.holo_blue_dark);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
@@ -121,9 +110,12 @@ public class ElementDetailFragment extends ListFragment  {
         outState.putInt("selectedItem", selectedIID);
     }
 
-
-//    public ElementDetailFragment() {
-//        // Required empty public constructor
-//    }
+    public void updateDetailData(int position) {
+        Log.d("ElementDetailFragment", "updateDetailData");
+        items = Item.itemToArray(Item.items[position]);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, items);
+        setListAdapter(adapter);
+    }
 
 }
