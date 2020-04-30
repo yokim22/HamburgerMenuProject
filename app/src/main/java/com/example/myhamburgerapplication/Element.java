@@ -18,14 +18,20 @@ public class Element {
     }
 
     // sample data
-    public static final Element[] sample_data = {
-            new Element("Triple Cheeseburger", Item.items[0]),
-            new Element("Bacon Clubhouse Burger", Item.items[1]),
-            new Element("Double Filet-O-Fish", Item.items[2]),
-            new Element("Buffalo Ranch McChicken", Item.items[3]),
-            new Element("Big Mac", Item.items[4]),
-            new Element("Quarter-Pounder", Item.items[5]),
-            new Element("Cheeseburger", Item.items[6])
+        public static final Element[] sample_data = {
+            new Element("Hamburger", Item.items[0]),
+            new Element("Beverage", Item.items[1]),
+            new Element("Breakfast", Item.items[2]),
+
     };
+//    public static final Element[] sample_data = {
+//            new Element("Triple Cheeseburger", Item.items[0]),
+//            new Element("Bacon Clubhouse Burger", Item.items[1]),
+//            new Element("Double Filet-O-Fish", Item.items[2]),
+//            new Element("Buffalo Ranch McChicken", Item.items[3]),
+//            new Element("Big Mac", Item.items[4]),
+//            new Element("Quarter-Pounder", Item.items[5]),
+//            new Element("Cheeseburger", Item.items[6])
+//    };
 
 }

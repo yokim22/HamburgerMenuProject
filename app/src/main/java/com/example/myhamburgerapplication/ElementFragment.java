@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +24,9 @@ import android.widget.ListView;
 public class ElementFragment extends ListFragment {
 
     int mSelectedElement;
+    String[] elements;
+    boolean menuclick;
+
 
     static interface Listener {
         void itemClicked(long id);
@@ -33,15 +37,16 @@ public class ElementFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("ElementFragment", "onCreate()");
+        Log.d("onCreate", "ElementFragment");
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("onCreateView", "ElementFragment");
 
-        String[] elements = new String[Element.sample_data.length];
+        elements = new String[Element.sample_data.length];
         for(int i = 0; i < elements.length; i++) {
             elements[i] = Element.sample_data[i].getElement();
         }
@@ -57,24 +62,30 @@ public class ElementFragment extends ListFragment {
 
     @Override
     public void onAttach(Context context) {
+        Log.d("onAttach", "ElementFragment");
         super.onAttach(context);
         this.listener = (Listener)context;
     }
 
     @Override
     public void onListItemClick(ListView listView, View itemView, int position, long id) {
+        Log.d("onListItemClick", "ElementFragment");
         mSelectedElement = (int)id;
         getListView().setSelector(android.R.color.holo_blue_dark);
+        getListView().setItemChecked(mSelectedElement, true);
         if (listener != null) {
             Log.d("click item" ,": " + id);
             listener.itemClicked(id);
         }
 
-        createElementDetailView(mSelectedElement);
+        if (!menuclick) {
+            Log.d("ElementFragment", "not menu click");
+            createElementDetailView(mSelectedElement);
+        }
     }
 
     public void createElementDetailView(int position) {
-        Log.d("ElementFragment" ,"createElementDetailView");
+        Log.d("createElementDetailView", "ElementFragment");
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) { // landscape mode
             Log.d("ElementFragment: " , "landscape mode");
@@ -105,19 +116,69 @@ public class ElementFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("ElementFragmenet", "onActivityCreated");
+        Log.d("onActivityCreated", "ElementFragment");
 
+        // rotation restore position
         if (savedInstanceState != null) {
             // reset the last selected position
             mSelectedElement = savedInstanceState.getInt("selectedElement", 0);
             Log.d("elementfragment", "last pos: " + mSelectedElement);
+        }
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            createElementDetailView(mSelectedElement);
+        } else {
+            getListView().setItemChecked(mSelectedElement, true);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d("ElementFragmenet", "onSaveInstanceState");
+        Log.d("onSaveInstanceState", "ElementFragment");
         outState.putInt("selectedElement", mSelectedElement);
+    }
+
+    // update elements item
+    public void updateItemData(int position) {
+        Log.d("updateItemData", "ElementFragment");
+        menuclick = true;
+        elements = Item.itemToArray(Item.items[position]);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, elements);
+        setListAdapter(adapter);
+    }
+
+    String TAG = "test";
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause()");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop()");
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, " onDestroyView()");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy()");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, " onDetach()");
     }
 }

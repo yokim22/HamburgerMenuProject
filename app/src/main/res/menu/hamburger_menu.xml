@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/hamburger"
+        android:title="@string/hamburger"
+        android:visible="true"/>
+    <item
+        android:id="@+id/beverage"
+        android:title="@string/beverage"
+        android:visible="true"/>
+    <item
+        android:id="@+id/breakfast"
+        android:title="@string/breakfast"
+        android:visible="true"/>
+
+</menu>
+
+    <!--        android:icon="@android:drawable/menuitem_background"-->

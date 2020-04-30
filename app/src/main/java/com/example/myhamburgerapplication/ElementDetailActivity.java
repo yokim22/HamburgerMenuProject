@@ -14,26 +14,29 @@ import android.view.View;
 
 public class ElementDetailActivity extends AppCompatActivity {
 
+    int elementID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("ElementDetailActivity", "onCreate()");
+        Log.d("onCreate", "ElementDetailActivity");
 
         // finish the current activity when changing to landscape on detail view
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.d("onCreate-landscape", "ElementDetailActivity");
             finish();
             return;
         }
 
         if (savedInstanceState == null) {
+            Log.d("save null", "ElementDetailActivity");
             setContentView(R.layout.activity_detail);
+
             ElementDetailFragment detail_frag = (ElementDetailFragment)
                     getSupportFragmentManager().findFragmentById(R.id.detail_fragment);
 
-            int elementID = (int) getIntent().getExtras().get("currelement");
-            Log.d("ElementDetailActivity!!", "elementid: " + elementID);
-            detail_frag.setElementID(elementID);
-//            detail_frag.setItemID();
+        } else {
+            Log.d("save not null", "ElementDetailActivity");
         }
     }
 
