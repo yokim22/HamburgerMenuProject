@@ -1,5 +1,6 @@
 package com.example.myhamburgerapplication;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
@@ -36,15 +37,17 @@ public class MainActivity extends AppCompatActivity implements ElementFragment.L
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        // TO DO: save id -> restore
+
         switch (id) {
             case R.id.hamburger:
-                setItems(0);
+                callDetailActivity(0);
                 break;
             case R.id.beverage:
-                setItems(1);
+                callDetailActivity(1);
                 break;
             case R.id.breakfast:
-                setItems(2);
+                callDetailActivity(2);
                 break;
             default:
                 break;
@@ -53,12 +56,10 @@ public class MainActivity extends AppCompatActivity implements ElementFragment.L
         return super.onOptionsItemSelected(item);
     }
 
-    public void setItems(int id) {
-        ElementFragment element_frag = (ElementFragment)
-                getSupportFragmentManager().findFragmentById(R.id.element_fragment);
-
-        // update detail list data
-        element_frag.updateItemData(id);
+    public void callDetailActivity(int id) {
+        Intent intent = new Intent(this, ElementDetailActivity.class);
+        intent.putExtra("currelement", id);
+        startActivity(intent);
     }
 
     @Override

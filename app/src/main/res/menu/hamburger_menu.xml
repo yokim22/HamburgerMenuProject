@@ -2,17 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/hamburger"
+        android:checkable="true"
         android:title="@string/hamburger"
-        android:visible="true"/>
+        android:visible="true" />
     <item
         android:id="@+id/beverage"
+        android:checkable="true"
         android:title="@string/beverage"
-        android:visible="true"/>
+        android:visible="true" />
     <item
         android:id="@+id/breakfast"
+        android:checkable="true"
         android:title="@string/breakfast"
-        android:visible="true"/>
+        android:visible="true" />
 
 </menu>
-
-    <!--        android:icon="@android:drawable/menuitem_background"-->

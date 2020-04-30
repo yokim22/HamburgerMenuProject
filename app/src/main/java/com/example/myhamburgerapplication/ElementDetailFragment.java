@@ -27,15 +27,16 @@ public class ElementDetailFragment extends ListFragment  {
 
     private ElementDetailFragment.Listener listener;
 
-    private int selectedEID; // selected element position
-    private int selectedIID; // selected item position
-    String[] items;
-    TextView title;
+    private static int selectedEID; // selected element position
+    private static int selectedIID; // selected item position
+    private static String[] items;
+    private static TextView title;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("onCreate", "ElementDetailFragment");
+        //setRetainInstance(true);
 
         Bundle extras = getActivity().getIntent().getExtras();
         if (extras != null) {

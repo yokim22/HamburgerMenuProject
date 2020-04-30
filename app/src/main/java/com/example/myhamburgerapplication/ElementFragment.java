@@ -23,16 +23,24 @@ import android.widget.TextView;
  */
 public class ElementFragment extends ListFragment {
 
-    int mSelectedElement;
-    String[] elements;
-    boolean menuclick;
+    private static int mSelectedElement;
+    private static String[] elements;
 
+//    private static boolean menuclick;
 
     static interface Listener {
         void itemClicked(long id);
     };
 
     private Listener listener;
+
+    @Override
+    public void onAttach(Context context) {
+        Log.d("onAttach", "ElementFragment");
+        super.onAttach(context);
+        this.listener = (Listener)context;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,25 +54,51 @@ public class ElementFragment extends ListFragment {
                              Bundle savedInstanceState) {
         Log.d("onCreateView", "ElementFragment");
 
+        // retrive sample data
         elements = new String[Element.sample_data.length];
         for(int i = 0; i < elements.length; i++) {
             elements[i] = Element.sample_data[i].getElement();
         }
         /////////////////////////////////
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(inflater.getContext(),
-                android.R.layout.simple_list_item_1,
-                elements);
-        setListAdapter(adapter);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.d("onCreateView/landscape", "ElementFragment");
+            setElementData();
+        } else {
+            // empty view
+            Log.d("empty view", "ElementFragment");
+        }
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    public void setElementData() {
+        Log.d("updateDetailData", "ElementDetailFragment");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_list_item_1,
+                elements);
+        setListAdapter(adapter);
+    }
+
+    // called when the fragment's activity has been created/ rotation
     @Override
-    public void onAttach(Context context) {
-        Log.d("onAttach", "ElementFragment");
-        super.onAttach(context);
-        this.listener = (Listener)context;
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d("onActivityCreated", "ElementFragment");
+
+        // rotation restore position
+        if (savedInstanceState != null) {
+            // reset the last selected position
+            mSelectedElement = savedInstanceState.getInt("selectedElement", 0);
+            Log.d("elementfragment", "last pos: " + mSelectedElement);
+        }
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            createElementDetailView(mSelectedElement);
+        } else {
+            getListView().setItemChecked(mSelectedElement, true);
+        }
     }
 
     @Override
@@ -78,10 +112,7 @@ public class ElementFragment extends ListFragment {
             listener.itemClicked(id);
         }
 
-        if (!menuclick) {
-            Log.d("ElementFragment", "not menu click");
-            createElementDetailView(mSelectedElement);
-        }
+        createElementDetailView(mSelectedElement);
     }
 
     public void createElementDetailView(int position) {
@@ -112,41 +143,12 @@ public class ElementFragment extends ListFragment {
 
     }
 
-    // called when the fragment's activity has been created/ rotation
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.d("onActivityCreated", "ElementFragment");
-
-        // rotation restore position
-        if (savedInstanceState != null) {
-            // reset the last selected position
-            mSelectedElement = savedInstanceState.getInt("selectedElement", 0);
-            Log.d("elementfragment", "last pos: " + mSelectedElement);
-        }
-
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            createElementDetailView(mSelectedElement);
-        } else {
-            getListView().setItemChecked(mSelectedElement, true);
-        }
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d("onSaveInstanceState", "ElementFragment");
         outState.putInt("selectedElement", mSelectedElement);
-    }
-
-    // update elements item
-    public void updateItemData(int position) {
-        Log.d("updateItemData", "ElementFragment");
-        menuclick = true;
-        elements = Item.itemToArray(Item.items[position]);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, elements);
-        setListAdapter(adapter);
     }
 
     String TAG = "test";
