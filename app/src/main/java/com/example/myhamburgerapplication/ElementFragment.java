@@ -19,6 +19,7 @@ import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,6 +70,14 @@ public class ElementFragment extends ListFragment {
         } else {
             // empty view
             Log.d("empty view", "ElementFragment");
+            Toast.makeText(getActivity(), "Select Menu",
+                    Toast.LENGTH_SHORT).show();
+
+            String[] dummy = {};
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_list_item_1,
+                    dummy);
+            setListAdapter(adapter);
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -100,6 +109,7 @@ public class ElementFragment extends ListFragment {
 //        }
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             createElementDetailView(mSelectedElement);
         } else {
             getListView().setItemChecked(mSelectedElement, true);
