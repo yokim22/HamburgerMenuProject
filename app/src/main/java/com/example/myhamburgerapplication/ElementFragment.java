@@ -1,10 +1,12 @@
 package com.example.myhamburgerapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
@@ -87,12 +89,15 @@ public class ElementFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         Log.d("onActivityCreated", "ElementFragment");
 
+        SharedPreferences prefs = getActivity().getSharedPreferences("prefselection", getActivity().MODE_PRIVATE);
+        mSelectedElement = prefs.getInt("selectedEle", -1);
+
         // rotation restore position
-        if (savedInstanceState != null) {
-            // reset the last selected position
-            mSelectedElement = savedInstanceState.getInt("selectedElement", 0);
-            Log.d("elementfragment", "last pos: " + mSelectedElement);
-        }
+//        if (savedInstanceState != null) {
+//            // reset the last selected position
+//            mSelectedElement = savedInstanceState.getInt("selectedElement", 0);
+//            Log.d("elementfragment", "last pos: " + mSelectedElement);
+//        }
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             createElementDetailView(mSelectedElement);
@@ -111,6 +116,14 @@ public class ElementFragment extends ListFragment {
             Log.d("click item" ,": " + id);
             listener.itemClicked(id);
         }
+
+        // need to update shared pref
+        SharedPreferences prefs = getActivity().getSharedPreferences("prefselection", getActivity().MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("selectedEle", mSelectedElement);
+        editor.putInt("selectedItem", -1);  // new choice - reset item id
+        editor.commit();
+
 
         createElementDetailView(mSelectedElement);
     }
@@ -144,12 +157,12 @@ public class ElementFragment extends ListFragment {
     }
 
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d("onSaveInstanceState", "ElementFragment");
-        outState.putInt("selectedElement", mSelectedElement);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        Log.d("onSaveInstanceState", "ElementFragment");
+//        outState.putInt("selectedElement", mSelectedElement);
+//    }
 
     String TAG = "test";
 

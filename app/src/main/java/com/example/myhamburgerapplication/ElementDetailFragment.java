@@ -1,6 +1,7 @@
 package com.example.myhamburgerapplication;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -20,6 +21,9 @@ import android.widget.TextView;
  * A simple {@link Fragment} subclass.
  */
 public class ElementDetailFragment extends ListFragment  {
+
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
     static interface Listener {
         void detailItemClicked(long id);
@@ -41,9 +45,9 @@ public class ElementDetailFragment extends ListFragment  {
         Bundle extras = getActivity().getIntent().getExtras();
         if (extras != null) {
             selectedEID = extras.getInt("currelement");
-            Log.d("ElementDetailActivity!!", "elementid: " + selectedEID);
+            Log.d("ElementDetailFragment!!", "elementid: " + selectedEID);
         } else {
-            Log.d("no extra", "ElementDetailActivity");
+            Log.d("no extra", "ElementDetailFragment");
         }
     }
 
@@ -92,6 +96,12 @@ public class ElementDetailFragment extends ListFragment  {
             listener.detailItemClicked(id);
         }
 
+        // need to update shared pref
+        SharedPreferences prefs = getActivity().getSharedPreferences("prefselection", getActivity().MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("selectedItem", selectedIID);
+        editor.commit();
+
     }
 
     // called when the fragment's activity has been created/ rotation
@@ -100,27 +110,16 @@ public class ElementDetailFragment extends ListFragment  {
         super.onActivityCreated(savedInstanceState);
         Log.d("onActivityCreated", "ElementDetailFragment");
 
-        if (savedInstanceState != null) {
-            Log.d("not null!!", "ElementDetailFragment");
-            // reset the last selected position
-            selectedIID = savedInstanceState.getInt("selectedItem", 0);
-            selectedEID = savedInstanceState.getInt("selectedEle", 0);
-            Log.d("selectedIID", "ElementDetailFragment " + selectedIID);
-            Log.d("selectedEID", "ElementDetailFragment " + selectedEID);
-        } else {
-            Log.d("null!!", "ElementDetailFragment");
-        }
+        SharedPreferences prefs = getActivity().getSharedPreferences("prefselection", getActivity().MODE_PRIVATE);
+        selectedIID = prefs.getInt("selectedItem", -1);
+        selectedEID = prefs.getInt("selectedEle", -1);
+
+        Log.d("selectedIID", "ElementDetailFragment " + selectedIID);
+        Log.d("selectedEID", "ElementDetailFragment " + selectedEID);
 
         getListView().setItemChecked(selectedIID, true);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        Log.d("onSaveInstanceState", "ElementDetailFragment");
-        super.onSaveInstanceState(outState);
-        outState.putInt("selectedItem", selectedIID);
-        outState.putInt("selectedEle", selectedEID);
-    }
 
     // called from ElementFragment when element is selected
     public void updateDetailData(int position) {
@@ -137,12 +136,6 @@ public class ElementDetailFragment extends ListFragment  {
     }
 
     String TAG  = "detail_test";
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause()");
-    }
 
     @Override
     public void onStop() {

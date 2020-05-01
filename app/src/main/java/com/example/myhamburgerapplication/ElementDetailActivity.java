@@ -3,14 +3,10 @@ package com.example.myhamburgerapplication;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
-import android.view.View;
 
 public class ElementDetailActivity extends AppCompatActivity {
 
@@ -35,15 +31,25 @@ public class ElementDetailActivity extends AppCompatActivity {
                     .add(android.R.id.content, detail_frag).commit();
         }
 
-//        if (savedInstanceState == null) {
-//            Log.d("save null", "ElementDetailActivity");
-//
-//            ElementDetailFragment detail_frag = (ElementDetailFragment)
-//                    getSupportFragmentManager().findFragmentById(R.id.detail_fragment);
-//
-//        } else {
-//            Log.d("save not null", "ElementDetailActivity");
-//        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("onPause", "ElementDetailActivity");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("onStop", "ElementDetailActivity");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("onDestroy", "ElementDetailActivity");
     }
 
 }
